@@ -1,7 +1,7 @@
 import axios from 'axios';
 import WebSocket from 'ws';
 
-const BinanceWebsocket = new WebSocket('wss://stream.binance.com:9443/ws/pixelusdt@trade');
+const BinanceWebsocket = new WebSocket('wss://stream.binance.com:9443/ws/pixelusdt@ticker');
 
 BinanceWebsocket.onmessage = function (event) {
     const BinanceResult = event.data ? JSON.parse(event.data.toString()) : '';
@@ -32,7 +32,7 @@ axios.post('https://api.kucoin.com/api/v1/bullet-public')
         };
         console.log(KucoinConfig);
 
-        const KucoinWebsocket = new WebSocket(`wss://ws-api-spot.kucoin.com?token=${KucoinConfig.Token}&[]`);
+        const KucoinWebsocket = new WebSocket(`${KucoinConfig.Endpoint}?token=${KucoinConfig.Token}`);
         let IsSubscribed = false;
 
         KucoinWebsocket.onopen = () => {
