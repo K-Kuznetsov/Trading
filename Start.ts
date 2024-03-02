@@ -49,8 +49,8 @@ axios.post('https://api.kucoin.com/api/v1/bullet-public')
         KucoinWebsocket.onmessage = (event) => {
 
             try {
-                const dataString = event.data ? event.data.toString() : '';
-                const CryptoData = JSON.parse(dataString);
+                const DataString = event.data ? event.data.toString() : '';
+                const CryptoData = JSON.parse(DataString);
 
                 if (CryptoData.data && 'price' in CryptoData.data) {
                     console.log(`${CryptoData.topic.split(':')[1]}: ${parseFloat(CryptoData.data.price).toFixed(5)}`);
