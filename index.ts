@@ -51,7 +51,7 @@ axios.post('https://api.kucoin.com/api/v1/bullet-public')
                 const CryptoData = JSON.parse(dataString);
 
                 if (CryptoData.data && 'price' in CryptoData.data) {
-                    console.log(`${CryptoData.topic.split(':')[1]}': ${parseFloat(CryptoData.data.price).toFixed(5)}`);
+                    console.log(`${CryptoData.topic.split(':')[1]}: ${parseFloat(CryptoData.data.price).toFixed(5)}`);
                 } else {
                     console.log("Price is not available in the data object");
                 };
