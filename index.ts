@@ -1,10 +1,10 @@
 import axios from 'axios';
 import WebSocket from 'ws';
 
-let BinanceWebsocket = new WebSocket('wss://stream.binance.com:9443/ws/pixelusdt@trade');
+const BinanceWebsocket = new WebSocket('wss://stream.binance.com:9443/ws/pixelusdt@trade');
 
 BinanceWebsocket.onmessage = function (event) {
-    let BinanceResult = event.data ? JSON.parse(event.data.toString()) : '';
+    const BinanceResult = event.data ? JSON.parse(event.data.toString()) : '';
     console.log(`PIXEL-USDT: ${parseFloat(BinanceResult.p).toFixed(5)}`);
 };
 
@@ -31,7 +31,7 @@ axios.post('https://api.kucoin.com/api/v1/bullet-public')
         console.log(KucoinConfig);
 
         const KucoinWebsocket = new WebSocket(`wss://ws-api-spot.kucoin.com?token=${KucoinConfig.Token}&[]`);
-        let isSubscribed = false;
+        let IsSubscribed = false;
 
         KucoinWebsocket.onopen = () => {
             console.log("WebSocket connection established");
@@ -56,11 +56,11 @@ axios.post('https://api.kucoin.com/api/v1/bullet-public')
                     console.log("Price is not available in the data object");
                 };
 
-                if (CryptoData && !isSubscribed) {
-                    let KucoinID = CryptoData.id;
+                if (CryptoData && !IsSubscribed) {
+                    const KucoinID = CryptoData.id;
 
                     if (KucoinID) {
-                        const subscriptions = [
+                        const Subscriptions = [
                             "/market/ticker:NEON-USDT",
                             "/market/ticker:MAVIA-USDT",
                             "/market/ticker:KAS-USDT",
@@ -73,10 +73,10 @@ axios.post('https://api.kucoin.com/api/v1/bullet-public')
                             "response": true
                         }));
 
-                        subscriptions.forEach(subscription => {
-                            KucoinWebsocket.send(JSON.stringify(subscription));
+                        Subscriptions.forEach(Subscription => {
+                            KucoinWebsocket.send(JSON.stringify(Subscription));
                         });
-                        isSubscribed = true;
+                        IsSubscribed = true;
                         console.log("Subscription messages sent");
                     };
                 };
