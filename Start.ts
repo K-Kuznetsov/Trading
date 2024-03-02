@@ -5,7 +5,9 @@ const BinanceWebsocket = new WebSocket('wss://stream.binance.com:9443/ws/pixelus
 
 BinanceWebsocket.onmessage = function (event) {
     const BinanceResult = event.data ? JSON.parse(event.data.toString()) : '';
-    console.log(`PIXEL-USDT: ${parseFloat(BinanceResult.p).toFixed(5)}`);
+    const PixelPrice = parseFloat(BinanceResult.p).toFixed(5);
+    console.log(`PIXEL-USDT: ${PixelPrice}`);
+    return PixelPrice;
 };
 
 interface KucoinConfig {
