@@ -1,23 +1,17 @@
 import WebSocket from 'ws';
 import CalculateRSI from './RSI';
 
-const RSIperiod: number = 14;
+let RSIperiod: number = 0;
 const RSIoverbought: number = 70;
 const RSIoversold: number = 30;
-const CurrencyPair: string = 'pixelusdt';
+const CurrencyPair: string = 'btcusdt';
 const CandleInterval: string = '1m';
-const Portfolio: number = 1000;
-const TradeAmount: number = Portfolio / 20;
+const Portfolio: number = 70.82;
+const TradeAmount: string = (Portfolio / 20).toFixed(7);
 
 const BinanceWebsocket: any = new WebSocket(`wss://stream.binance.com:9443/ws/${CurrencyPair}@kline_${CandleInterval}`);
 
-let ClosingPrices: number[] = [
-    0.54, 0.5407, 0.5404,
-    0.5398, 0.5386, 0.539,
-    0.5384, 0.5367, 0.5384,
-    0.538, 0.5379, 0.5382,
-    0.5386, 0.5383, 0.5387
-];
+let ClosingPrices: number[] = [];
 
 BinanceWebsocket.onmessage = function (event: any) {
     let BinanceResult: any = event.data ? JSON.parse(event.data.toString()) : '';
@@ -25,9 +19,13 @@ BinanceWebsocket.onmessage = function (event: any) {
 
     if (Candle.x === true) {
         ClosingPrices.push(parseFloat(Candle.c));
-        if (ClosingPrices.length > RSIperiod + 1) {
+
+        if (ClosingPrices.length > 15) {
             ClosingPrices.shift()
         };
+
+        RSIperiod = ClosingPrices.length - 1;
+
         const RSI: number = CalculateRSI(RSIperiod, ClosingPrices);
         console.log(`Candle closed at ${Candle.c}, RSI: ${RSI.toFixed(2)}`);
         if (RSI < RSIoversold) {
