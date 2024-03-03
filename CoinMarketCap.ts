@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 async function PortfolioValue(Portfolio: any, APIkey: string) {
-    const Currencies: any = Object.keys(Portfolio).join(',');
+    const Currencies: string = Object.keys(Portfolio).join(',');
     const FinalURL: string = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${Currencies}&CMC_PRO_API_KEY=${APIkey}`;
 
     try {
