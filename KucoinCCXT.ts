@@ -2,8 +2,8 @@ import ccxt from 'ccxt';
 import 'dotenv/config';
 require('events').EventEmitter.defaultMaxListeners = 15;
 
-const KucoinData = async (Key: string, Secret: string, Password: string) => {
-    const exchange = new ccxt.kucoin({
+async function KucoinSetup(Key: string, Secret: string, Password: string) {
+    const KucoinExchange = new ccxt.kucoin({
         apiKey: Key,
         secret: Secret,
         password: Password,
@@ -11,18 +11,23 @@ const KucoinData = async (Key: string, Secret: string, Password: string) => {
             adjustForTimeDifference: true,
         }
     });
-
-    //await new Promise(resolve => setTimeout(resolve, 5000));
-    const Balance = await exchange.fetchBalance();
-
-    const KucoinWallet = Object.entries(Balance.total).reduce((acc: {[key: string]: number}, [key, value]) => {
-        if ((value as number) > 0) {
-            acc[key] = value as number;
-        };
-        return acc;
-    }, {} as {[key: string]: number});
-    
-    return KucoinWallet;
+    return KucoinExchange;
 };
 
-export default KucoinData;
+
+async function GetKucoinAmounts(KucoinExchange: any) {
+    if (KucoinExchange.has['fetchBalance']) {
+        const Balance = await KucoinExchange.fetchBalance();
+        const KucoinAmounts = Object.entries(Balance.total).reduce((acc: { [key: string]: number }, [key, value]) => {
+            if ((value as number) > 0) {
+                acc[key] = value as number;
+            };
+            return acc;
+        }, {} as { [key: string]: number });
+
+        return KucoinAmounts;
+    };
+};
+
+
+export { KucoinSetup, GetKucoinAmounts};

@@ -27,7 +27,7 @@ BinanceWebsocket.onmessage = function (event: any) {
         RSIperiod = ClosingPrices.length - 1;
 
         const RSI: number = CalculateRSI(RSIperiod, ClosingPrices);
-        console.log(`Candle closed at ${Candle.c}, RSI: ${RSI.toFixed(2)}`);
+        console.log(`Candle closed at ${Candle.c}, RSI: ${RSI.toFixed(1)}`);
         if (RSI < RSIoversold) {
             console.log(`Buy ${TradeAmount} at ${Candle.c}`);
         } else if (RSI > RSIoverbought) {
